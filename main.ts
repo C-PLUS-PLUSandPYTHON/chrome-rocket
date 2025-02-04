@@ -35,6 +35,7 @@ function setEnemies () {
 }
 let timer = 0
 let toggle_y = 0
+let tick = 0
 let score = 0
 let ememy_y: number[] = []
 let enemy_x: number[] = []
@@ -79,6 +80,9 @@ basic.forever(function () {
         game_over = false
         score = 0
     } else {
+        if (score < 20) {
+            tick = (30 - score) / 2
+        }
         if (input.pinIsPressed(TouchPin.P0)) {
             toggle_y += 1
         } else {
@@ -87,7 +91,7 @@ basic.forever(function () {
         if (toggle_y == 1) {
             y_pos = 1 - y_pos
         }
-        if (timer > 5) {
+        if (timer > tick) {
             timer = 0
             setRocket()
             setEnemies()
@@ -102,6 +106,6 @@ basic.forever(function () {
             I2C_LCD1602.ShowNumber(highscore, 14, 1)
         }
         timer += 1
-        basic.pause(5)
+        basic.pause(1)
     }
 })
