@@ -93,6 +93,7 @@ basic.forever(function () {
             setEnemies()
             if (score > highscore) {
                 highscore = score
+                music.setVolume(255)
                 music.play(music.stringPlayable("B B - B B - B B ", 1000), music.PlaybackMode.InBackground)
             }
             I2C_LCD1602.ShowString("|", 13, 0)
