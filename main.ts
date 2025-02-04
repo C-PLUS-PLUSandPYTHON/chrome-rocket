@@ -35,21 +35,19 @@ function setEnemies () {
 }
 let timer = 0
 let toggle_y = 0
+let score = 0
+let ememy_y: number[] = []
+let enemy_x: number[] = []
 let y_pos = 0
 let game_over = false
-let enemy_x: number[] = []
-let ememy_y: number[] = []
 let rocket_costume = ""
+rocket_costume = ":>"
 I2C_LCD1602.LcdInit(0)
 I2C_LCD1602.BacklightOn()
-rocket_costume = ":>"
-ememy_y = [0, 1]
-enemy_x = [15, 23]
-game_over = false
-let score = 0
+game_over = true
+let highscore = 0
 basic.forever(function () {
     if (game_over) {
-        music.play(music.stringPlayable("C5 A B G A F G E ", 120), music.PlaybackMode.UntilDone)
         I2C_LCD1602.clear()
         I2C_LCD1602.ShowString("GAME OVER!", 0, 0)
         I2C_LCD1602.ShowString("Press to Play", 3, 1)
@@ -60,7 +58,7 @@ basic.forever(function () {
             . # . # .
             # . . . #
             `)
-        basic.pause(200)
+        music.play(music.stringPlayable("C5 A B G A F G E ", 120), music.PlaybackMode.UntilDone)
         basic.showNumber(score)
         while (!(input.pinIsPressed(TouchPin.P0))) {
         	
@@ -93,9 +91,14 @@ basic.forever(function () {
             timer = 0
             setRocket()
             setEnemies()
+            if (score > highscore) {
+                highscore = score
+                music.play(music.stringPlayable("B B - B B - B B ", 1000), music.PlaybackMode.InBackground)
+            }
             I2C_LCD1602.ShowString("|", 13, 0)
             I2C_LCD1602.ShowString("|", 13, 1)
             I2C_LCD1602.ShowNumber(score, 14, 0)
+            I2C_LCD1602.ShowNumber(highscore, 14, 1)
         }
         timer += 1
         basic.pause(5)
